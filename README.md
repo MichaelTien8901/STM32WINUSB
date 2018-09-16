@@ -3,4 +3,5 @@ This project show the steps to convert STM32 USB CDC to WINUSB Device with HAL l
 
 * Create STM32 USB CDC device using CubeMX.
 * Implement echo function
-* Change source code of USB library
+* Change source code of USB library.  Select DeviceInterfaceGUID = {13eb360b-bc1e-46cb-ac8b-ef3da47b4062}
+The DeviceInterfaceGUID is written into both OSStringPropertyDescriptor and INF file.

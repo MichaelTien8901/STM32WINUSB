@@ -61,7 +61,8 @@
 #include <string.h>
 #include "stm32f0xx.h"
 #include "stm32f0xx_hal.h"
-#include "usbd_def.h"
+// this following include delete because structure defined before usb configuration is defined    
+//#include "usbd_def.h"
 
 /* USER CODE BEGIN INCLUDE */
 
@@ -104,6 +105,7 @@
 #define USBD_SELF_POWERED     0
 /*---------- -----------*/
 #define MAX_STATIC_ALLOC_SIZE     512
+#define USBD_SUPPORT_WINUSB       1
 
 /****************************************/
 /* #define for FS and HS identification */

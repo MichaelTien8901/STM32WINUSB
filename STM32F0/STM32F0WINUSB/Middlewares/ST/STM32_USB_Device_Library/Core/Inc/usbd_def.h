@@ -91,6 +91,8 @@
 #define  USB_REQ_GET_INTERFACE                          0x0A
 #define  USB_REQ_SET_INTERFACE                          0x0B
 #define  USB_REQ_SYNCH_FRAME                            0x0C
+// Add my Michael Tien 8/26/2018
+#define  USB_REQ_MS_VENDOR_CODE                         0xA0
 
 #define  USB_DESC_TYPE_DEVICE                              1
 #define  USB_DESC_TYPE_CONFIGURATION                       2
@@ -179,7 +181,9 @@ typedef struct _Device_cb
 #if (USBD_SUPPORT_USER_STRING == 1)
   uint8_t  *(*GetUsrStrDescriptor)(struct _USBD_HandleTypeDef *pdev ,uint8_t index,  uint16_t *length);   
 #endif  
-  
+#if (USBD_SUPPORT_WINUSB == 1) 
+  uint8_t  *(*GetWinUSBOSDescriptor)(uint16_t *length); 
+#endif   
 } USBD_ClassTypeDef;
 
 /* Following USB Device Speed */
@@ -210,6 +214,13 @@ typedef struct
 #if (USBD_LPM_ENABLED == 1)
   uint8_t  *(*GetBOSDescriptor)( USBD_SpeedTypeDef speed , uint16_t *length); 
 #endif  
+   
+#if (USBD_SUPPORT_WINUSB==1)
+
+   uint8_t *(*GetWinUSBOSFeatureDescriptor)(uint16_t *length);
+   uint8_t *(*GetWinUSBOSPropertyDescriptor)(uint16_t *length);
+#endif
+   
 } USBD_DescriptorsTypeDef;
 
 /* USB Device handle structure */
