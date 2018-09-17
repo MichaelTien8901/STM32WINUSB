@@ -1,0 +1,1086 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WinUSBNet</name>
+    </assembly>
+    <members>
+        <member name="T:MadWizard.WinUSBNet.API.APIException">
+            <summary>
+            Exception used internally to catch Win32 API errors. This exception should
+            not be thrown to the library's caller.
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.API.DeviceManagement">
+             <summary>
+             Routines for detecting devices and receiving device notifications.
+             </summary>
+            <summary>
+            API declarations relating to device management (SetupDixxx and 
+            RegisterDeviceNotification functions).   
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.API.FileIO">
+             <summary>
+             API declarations relating to file I/O (and used by WinUsb).
+             </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.API.WinUSBDevice">
+            <summary>
+             Wrapper for a WinUSB device dealing with the WinUSB and additional interface handles
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBDeviceDescriptor">
+            <summary>
+            USB device details
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.PathName">
+            <summary>
+            Windows path name for the USB device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.VID">
+            <summary>
+            USB vendor ID (VID) of the device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.PID">
+            <summary>
+            USB product ID (PID) of the device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.Manufacturer">
+            <summary>
+            Manufacturer name, or null if not available
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.Product">
+            <summary>
+            Product name, or null if not available
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.SerialNumber">
+            <summary>
+            Device serial number, or null if not available
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.FullName">
+            <summary>
+            Friendly device name, or path name when no 
+            further device information is available
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.ClassValue">
+            <summary>
+            Device class code as defined in the interface descriptor
+            This property can be used if the class type is not defined
+            int the USBBaseClass enumeraiton
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.SubClass">
+            <summary>
+            Device subclass code
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.Protocol">
+            <summary>
+            Device protocol code
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceDescriptor.BaseClass">
+            <summary>
+            Device class code. If the device class does
+            not match any of the USBBaseClass enumeration values
+            the value will be USBBaseClass.Unknown
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBBaseClass">
+            <summary>
+            USB base class code enumeration, as defined in the USB specification
+            </summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Unknown">
+            <summary>Unknown non-zero class code. Used when the actual class code
+            does not match any of the ones defined in this enumeration. </summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.None">
+            <summary>Base class defined elsewhere (0x00)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Audio">
+            <summary>Audio base class (0x01)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.CommCDC">
+            <summary>Communications and CDC control base class (0x02)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.HID">
+            <summary>HID base class (0x03)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Physical">
+            <summary>Physical base class (0x05)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Image">
+            <summary>Image base class (0x06)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Printer">
+            <summary>Printer base class (0x07)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.MassStorage">
+            <summary>Mass storage base class (0x08)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Hub">
+            <summary>Hub base class (0x09)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.CDCData">
+            <summary>CDC data base class (0x0A)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.SmartCard">
+            <summary>Smart card base class (0x0B)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.ContentSecurity">
+            <summary>Content security base class (0x0D)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Video">
+            <summary>Video base class (0x0E)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.PersonalHealthcare">
+            <summary>Personal healthcare base class (0x0F)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.DiagnosticDevice">
+            <summary>Diagnosticdevice base class (0xDC)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.WirelessController">
+            <summary>Wireless controller base class (0xE0)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.Miscellaneous">
+            <summary>Miscellaneous base class (0xEF)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.ApplicationSpecific">
+            <summary>Application specific base class (0xFE)</summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBBaseClass.VendorSpecific">
+            <summary>Vendor specific base class (0xFF)</summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBDevice">
+            <summary>
+            The UsbDevice class represents a single WinUSB device.
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDevice.Pipes">
+            <summary>
+            Collection of all pipes available on the USB device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDevice.Interfaces">
+            <summary>
+            Collection of all interfaces available on the USB device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDevice.Descriptor">
+            <summary>
+            Device descriptor with information about the device
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.#ctor(MadWizard.WinUSBNet.USBDeviceInfo)">
+            <summary>
+            Constructs a new USB device
+            </summary>
+            <param name="deviceInfo">USB device info of the device to create</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.Dispose">
+            <summary>
+            Disposes the UsbDevice including all unmanaged WinUSB handles. This function
+            should be called when the UsbDevice object is no longer in use, otherwise
+            unmanaged handles will remain open until the garbage collector finalizes the
+            object.
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.Finalize">
+            <summary>
+            Finalizer for the UsbDevice. Disposes all unmanaged handles.
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.Dispose(System.Boolean)">
+            <summary>
+            Disposes the object
+            </summary>
+            <param name="disposing">Indicates wether Dispose was called manually (true) or by
+            the garbage collector (false) via the destructor.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.#ctor(System.String)">
+            <summary>
+            Constructs a new USB device
+            </summary>
+            <param name="devicePathName">Device path name of the USB device to create</param>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDevice.ControlPipeTimeout">
+            <summary>
+            Specifies the timeout in milliseconds for control pipe operations. If a control transfer does not finish within the specified time it will fail.
+            When set to zero, no timeout is used. Default value is 5000 milliseconds.
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlTransfer(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Initiates a control transfer over the default control endpoint. This method allows both IN and OUT direction transfers, depending
+            on the highest bit of the <paramref name="requestType"/> parameter. Alternatively, <see cref="M:MadWizard.WinUSBNet.USBDevice.ControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32)"/> and
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.ControlOut(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32)"/> can be used for control transfers in a specific direction, which is the recommended way because
+            it prevents using the wrong direction accidentally. Use the ControlTransfer method when the direction is not known at compile time.
+            </summary>
+            <param name="requestType">The setup packet request type.</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The data to transfer in the data stage of the control. When the transfer is in the IN direction the data received will be 
+            written to this buffer. For an OUT direction transfer the contents of the buffer are written sent through the pipe.</param>
+            <param name="length">Length of the data to transfer. Must be equal to or less than the length of <paramref name="buffer"/>. 
+            The setup packet's length member will be set to this length.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlTransfer(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer over the default control endpoint. This method allows both IN and OUT direction transfers, depending
+            on the highest bit of the <paramref name="requestType"/> parameter. Alternatively, <see cref="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)"/> and
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)"/> can be used for asynchronous control transfers in a specific direction, which is 
+            the recommended way because it prevents using the wrong direction accidentally. Use the BeginControlTransfer method when the direction is not 
+            known at compile time. </summary>
+            <param name="requestType">The setup packet request type.</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The data to transfer in the data stage of the control. When the transfer is in the IN direction the data received will be 
+            written to this buffer. For an OUT direction transfer the contents of the buffer are written sent through the pipe. Note: This buffer is not allowed
+            to change for the duration of the asynchronous operation.</param>
+            <param name="length">Length of the data to transfer. Must be equal to or less than the length of <paramref name="buffer"/>. The setup packet's length member will be set to this length.</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlTransfer(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer over the default control endpoint. This method allows both IN and OUT direction transfers, depending
+            on the highest bit of the <paramref name="requestType"/> parameter. Alternatively, <see cref="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)"/> and
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)"/> can be used for asynchronous control transfers in a specific direction, which is 
+            the recommended way because it prevents using the wrong direction accidentally. Use the BeginControlTransfer method when the direction is not 
+            known at compile time. </summary>
+            <param name="requestType">The setup packet request type.</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The data to transfer in the data stage of the control. When the transfer is in the IN direction the data received will be 
+            written to this buffer. For an OUT direction transfer the contents of the buffer are written sent through the pipe. The setup packet's length member will 
+            be set to the length of this buffer. Note: This buffer is not allowed to change for the duration of the asynchronous operation. </param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)">
+            <summary>
+            Waits for a pending asynchronous control transfer to complete.
+            </summary>
+            <param name="asyncResult">The <see cref="T:System.IAsyncResult"/> object representing the asynchonous operation,
+            as returned by one of the ControlIn, ControlOut or ControlTransfer methods.</param>
+            <returns>The number of bytes transfered during the operation.</returns>
+            <remarks>Every asynchronous control transfer must have a matching call to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to dispose
+            of any resources used and to retrieve the result of the operation. When the operation was successful the method returns the number 
+            of bytes that were transfered. If an error occurred during the operation this method will throw the exceptions that would 
+            otherwise have ocurred during the operation. If the operation is not yet finished EndControlTransfer will wait for the 
+            operation to finish before returning.</remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlTransfer(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            Initiates a control transfer over the default control endpoint. This method allows both IN and OUT direction transfers, depending
+            on the highest bit of the <paramref name="requestType"/> parameter). Alternatively, <see cref="M:MadWizard.WinUSBNet.USBDevice.ControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[])"/> and
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.ControlOut(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[])"/> can be used for control transfers in a specific direction, which is the recommended way because
+            it prevents using the wrong direction accidentally. Use the ControlTransfer method when the direction is not known at compile time.
+            </summary>
+            <param name="requestType">The setup packet request type.</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The data to transfer in the data stage of the control. When the transfer is in the IN direction the data received will be 
+            written to this buffer. For an OUT direction transfer the contents of the buffer are written sent through the pipe. The length of this
+            buffer is used as the number of bytes in the control transfer. The setup packet's length member will be set to this length as well.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlTransfer(System.Byte,System.Byte,System.Int32,System.Int32)">
+            <summary>
+            Initiates a control transfer without a data stage over the default control endpoint. This method allows both IN and OUT direction transfers, depending
+            on the highest bit of the <paramref name="requestType"/> parameter). Alternatively, <see cref="M:MadWizard.WinUSBNet.USBDevice.ControlIn(System.Byte,System.Byte,System.Int32,System.Int32)"/> and
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.ControlOut(System.Byte,System.Byte,System.Int32,System.Int32)"/> can be used for control transfers in a specific direction, which is the recommended way because
+            it prevents using the wrong direction accidentally. Use the ControlTransfer method when the direction is not known at compile time.
+            </summary>
+            <param name="requestType">The setup packet request type.</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initiates a control transfer over the default control endpoint. The request should have an IN direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter). A buffer to receive the data is automatically created by this method.
+            </summary>
+            <param name="requestType">The setup packet request type. The request type must specify the IN direction (highest bit set).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="length">Length of the data to transfer. A buffer will be created with this length and the length member of the setup packet 
+            will be set to this length.</param>
+            <returns>A buffer containing the data transfered.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Initiates a control transfer over the default control endpoint. The request should have an IN direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter).
+            </summary>
+            <param name="requestType">The setup packet request type. The request type must specify the IN direction (highest bit set).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The buffer that will receive the data transfered.</param>
+            <param name="length">Length of the data to transfer. The length member of the setup packet will be set to this length. The buffer specified 
+            by the <paramref name="buffer"/> parameter should have at least this length.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            Initiates a control transfer over the default control endpoint. The request should have an IN direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter). The length of buffer given by the <paramref name="buffer"/> parameter will dictate
+            the number of bytes that are transfered and the value of the setup packet's length member.
+            </summary>
+            <param name="requestType">The setup packet request type. The request type must specify the IN direction (highest bit set).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The buffer that will receive the data transfered. The length of this buffer will be the number of bytes transfered.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlIn(System.Byte,System.Byte,System.Int32,System.Int32)">
+            <summary>
+            Initiates a control transfer without a data stage over the default control endpoint. The request should have an IN direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter). The setup packets' length member will be set to zero.
+            </summary>
+            <param name="requestType">The setup packet request type. The request type must specify the IN direction (highest bit set).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlOut(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Initiates a control transfer over the default control endpoint. The request should have an OUT direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter).
+            </summary>
+            <param name="requestType">The setup packet request type. The request type must specify the OUT direction (highest bit cleared).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">A buffer containing the data to transfer in the data stage.</param>
+            <param name="length">Length of the data to transfer. Only the first <paramref name="length"/> bytes of <paramref name="buffer"/> will be transfered.
+            The setup packet's length parameter is set to this length.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlOut(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[])">
+            <summary>
+            Initiates a control transfer over the default control endpoint. The request should have an OUT direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter).
+            </summary>
+            <param name="requestType">The setup packet request type. The request type must specify the OUT direction (highest bit cleared).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">A buffer containing the data to transfer in the data stage. The complete buffer is transfered. The setup packet's length
+            parameter is set to the length of this buffer.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.ControlOut(System.Byte,System.Byte,System.Int32,System.Int32)">
+            <summary>
+            Initiates a control transfer without a data stage over the default control endpoint. The request should have an OUT direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter. The setup packets' length member will be set to zero.
+            </summary>
+            <param name="requestType">The setup packet request type. The request type must specify the OUT direction (highest bit cleared).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlTransfer(System.Byte,System.Byte,System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer without a data stage over the default control endpoint. This method allows both IN and OUT direction transfers, depending
+            on the highest bit of the <paramref name="requestType"/> parameter. Alternatively, <see cref="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)"/> and
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)"/> can be used for asynchronous control transfers in a specific direction, which is 
+            the recommended way because it prevents using the wrong direction accidentally. Use the BeginControlTransfer method when the direction is not 
+            known at compile time. </summary>
+            <param name="requestType">The setup packet request type.</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer over the default control endpoint.  The request should have an IN direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter).</summary>
+            <param name="requestType">The setup packet request type. The request type must specify the IN direction (highest bit set).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The buffer that will receive the data transfered.</param>
+            <param name="length">Length of the data to transfer. Must be equal to or less than the length of <paramref name="buffer"/>. The setup packet's length member will be set to this length.</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer over the default control endpoint. The request should have an IN direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter).</summary>
+            <param name="requestType">The setup packet request type. The request type must specify the IN direction (highest bit set).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The buffer that will receive the data transfered. The setup packet's length member will be set to the length of this buffer.</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlIn(System.Byte,System.Byte,System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer without a data stage over the default control endpoint. 
+            The request should have an IN direction (specified by the highest bit of the <paramref name="requestType"/> parameter).
+            The setup packets' length member will be set to zero.</summary>
+            <param name="requestType">The setup packet request type. The request type must specify the IN direction (highest bit set).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlOut(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer over the default control endpoint.  The request should have an OUT direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter).</summary>
+            <param name="requestType">The setup packet request type. The request type must specify the OUT direction (highest bit cleared).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The buffer that contains the data to be transfered.</param>
+            <param name="length">Length of the data to transfer. Must be equal to or less than the length of <paramref name="buffer"/>. The setup packet's length member will be set to this length.</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlOut(System.Byte,System.Byte,System.Int32,System.Int32,System.Byte[],System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer over the default control endpoint. The request should have an OUT direction (specified by the highest bit
+            of the <paramref name="requestType"/> parameter).</summary>
+            <param name="requestType">The setup packet request type. The request type must specify the OUT direction (highest bit cleared).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="buffer">The buffer that contains the data to be transfered. The setup packet's length member will be set to the length of this buffer.</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.BeginControlOut(System.Byte,System.Byte,System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates an asynchronous control transfer without a data stage over the default control endpoint. 
+            The request should have an OUT direction (specified by the highest bit of the <paramref name="requestType"/> parameter).
+            The setup packets' length member will be set to zero.</summary>
+            <param name="requestType">The setup packet request type. The request type must specify the OUT direction (highest bit cleared).</param>
+            <param name="request">The setup packet device request.</param>
+            <param name="value">The value member in the setup packet. Its meaning depends on the request. Value should be between zero and 65535 (0xFFFF).</param>
+            <param name="index">The index member in the setup packet. Its meaning depends on the request. Index should be between zero and 65535 (0xFFFF).</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the control transfer is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous control transfer, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBDevice.EndControlTransfer(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.GetDevices(System.String)">
+            <summary>
+            Finds WinUSB devices with a GUID matching the parameter guidString
+            </summary>
+            <param name="guidString">The GUID string that the device should match.
+            The format of this string may be any format accepted by the constructor 
+            of the System.Guid class</param>
+            <returns>An array of USBDeviceInfo objects representing the 
+            devices found. When no devices are found an empty array is 
+            returned.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.GetDevices(System.Guid)">
+            <summary>
+            Finds WinUSB devices with a GUID matching the parameter guid
+            </summary>
+            <param name="guid">The GUID that the device should match.</param>
+            <returns>An array of USBDeviceInfo objects representing the 
+            devices found. When no devices are found an empty array is 
+            returned.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.GetSingleDevice(System.Guid)">
+            <summary>
+            Finds the first WinUSB device with a GUID matching the parameter guid.
+            If multiple WinUSB devices match the GUID only the first one is returned.
+            </summary>
+            <param name="guid">The GUID that the device should match.</param>
+            <returns>An UsbDevice object representing the device if found. If
+            no device with the given GUID could be found null is returned.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBDevice.GetSingleDevice(System.String)">
+            <summary>
+            Finds the first WinUSB device with a GUID matching the parameter guidString.
+            If multiple WinUSB devices match the GUID only the first one is returned.
+            </summary>
+            <param name="guidString">The GUID string that the device should match.</param>
+            <returns>An UsbDevice object representing the device if found. If
+            no device with the given GUID could be found null is returned.</returns>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBDeviceInfo">
+            <summary>
+            Gives information about a device. This information is retrieved using the setup API, not the
+            actual device descriptor. Device description and manufacturer will be the strings specified
+            in the .inf file. After a device is opened the actual device descriptor can be read as well.
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceInfo.VID">
+            <summary>
+            Vendor ID (VID) of the USB device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceInfo.PID">
+            <summary>
+            Product ID (VID) of the USB device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceInfo.Manufacturer">
+            <summary>
+            Manufacturer of the device, as specified in the INF file (not the device descriptor)
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceInfo.DeviceDescription">
+            <summary>
+            Description of the device, as specified in the INF file (not the device descriptor)
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBDeviceInfo.DevicePath">
+            <summary>
+            Device pathname
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBException">
+            <summary>
+            Exception used by WinUSBNet to indicate errors. This is the
+            main exception to catch when using the library.
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBException.#ctor(System.String)">
+            <summary>
+            Constructs a new USBException with the given message
+            </summary>
+            <param name="message">The message describing the exception</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructs a new USBException with the given message and underlying exception
+            that caused the USBException.
+            </summary>
+            <param name="message">The message describing the exception</param>
+            <param name="innerException">The underlying exception causing the USBException</param>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBInterface">
+            <summary>
+            Represents a single USB interface from a USB device
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.Pipes">
+            <summary>
+            Collection of pipes associated with this interface
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.Number">
+            <summary>
+            Interface number from the interface descriptor
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.Device">
+            <summary>
+            USB device associated with this interface
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.InPipe">
+            <summary>
+            First IN direction pipe on this interface
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.OutPipe">
+            <summary>
+            First OUT direction pipe on this interface
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.BaseClass">
+            <summary>
+            Interface class code. If the interface class does
+            not match any of the USBBaseClass enumeration values
+            the value will be USBBaseClass.Unknown
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.ClassValue">
+            <summary>
+            Interface class code as defined in the interface descriptor
+            This property can be used if the class type is not defined
+            int the USBBaseClass enumeraiton
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.SubClass">
+            <summary>
+            Interface subclass code
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.Protocol">
+            <summary>
+            Interface protocol code
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterface.InterfaceIndex">
+            Zero based interface index in WinUSB.
+            Note that this is not necessarily the same as the interface *number*
+            from the interface descriptor. There might be interfaces within the
+            USB device that do not use WinUSB, these are not counted for index.
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBInterfaceCollection">
+            <summary>
+            Collection of UsbInterface objects
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBInterfaceCollection.Find(MadWizard.WinUSBNet.USBBaseClass)">
+            <summary>
+            Finds the first interface with that matches the device class 
+            given by the <paramref name="interfaceClass"/> parameter.
+            </summary>
+            <param name="interfaceClass">The device class the interface should match</param>
+            <returns>The first interface with the given interface class, or null
+            if no such interface exists.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBInterfaceCollection.FindAll(MadWizard.WinUSBNet.USBBaseClass)">
+            <summary>
+            Finds all interfaces matching the device class given by the 
+            <paramref name="interfaceClass"/> parameter.
+            </summary>
+            <param name="interfaceClass">The device class the interface should match</param>
+            <returns>An array of USBInterface objects matching the device class, or an empty 
+            array if no interface matches.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBInterfaceCollection.GetEnumerator">
+            <summary>
+            Returns a typed enumerator that iterates through a collection.
+            </summary>
+            <returns>The enumerator object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBInterfaceCollection.Item(System.Int32)">
+            <summary>
+            Get interface by interface number
+            </summary>
+            <param name="interfaceNumber">Number of the interface to return. Note: this is the number from the interface descriptor, which
+            is not necessarily the same as the interface index.</param>
+            <exception cref="T:System.IndexOutOfRangeException">Thrown when the given interface number does not exist in the collection.</exception>
+            <returns></returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBInterfaceCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An IEnumerator object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBEventHandler">
+            <summary>
+            Delegate for event handler methods handing USB events
+            </summary>
+            <param name="sender">The source of the event</param>
+            <param name="e">Details of the event</param>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBEventType">
+            <summary>
+            Event type enumeration for WinUSB events
+            </summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBEventType.DeviceArrival">
+            <summary>
+            A device has been connected to the system
+            </summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBEventType.DeviceRemoval">
+            <summary>
+            A device has been disconnected from the system
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBEvent">
+            <summary>
+            Contains the details of a USB event
+            </summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBEvent.Guid">
+            <summary>
+            WinUSB interface GUID of the device as specified in the WinUSBNotifier
+            </summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBEvent.DevicePath">
+            <summary>
+            Device pathname that identifies the device
+            </summary>
+        </member>
+        <member name="F:MadWizard.WinUSBNet.USBEvent.Type">
+            <summary>
+            Type of event that occurred
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBNotifier">
+            <summary>
+            Helper class to receive notifications on USB device changes such as 
+            connecting or removing a device.
+            </summary>
+        </member>
+        <member name="E:MadWizard.WinUSBNet.USBNotifier.Arrival">
+            <summary>
+            Event triggered when a new USB device that matches the USBNotifier's GUID is connected
+            </summary>
+        </member>
+        <member name="E:MadWizard.WinUSBNet.USBNotifier.Removal">
+            <summary>
+            Event triggered when a new USB device that matches the USBNotifier's GUID  is disconnected
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBNotifier.Guid">
+            <summary>
+            The interface GUID of devices this USBNotifier will watch
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.#ctor(System.Windows.Forms.Control,System.String)">
+            <summary>
+            Constructs a new USBNotifier that will watch for events on 
+            devices matching the given interface GUID. A Windows Forms control 
+            is needed since the notifier relies on window messages.
+            </summary>
+            <param name="control">A control that will be used internally for device notification messages. 
+            You can use a Form object for example.</param>
+            <param name="guidString">The interface GUID string of the devices to watch.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.#ctor(System.Windows.Forms.Control,System.Guid)">
+            <summary>
+            Constructs a new USBNotifier that will watch for events on 
+            devices matching the given interface GUID. A Windows Forms control 
+            is needed since the notifier relies on window messages.
+            </summary>
+            <param name="control">A control that will be used internally for device notification messages. 
+            You can use a Form object for example.</param>
+            <param name="guid">The interface GUID of the devices to watch.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.#ctor(System.IntPtr,System.Guid)">
+            <summary>
+            Constructs a new USBNotifier that will watch for events on 
+            devices matching the given interface GUID. A window handle
+            is needed since the notifier relies on window messages.
+            </summary>
+            <param name="windowHandle">Window handle of a window that will be used internally for device notification messages.</param>
+            <param name="guid">The interface GUID of the devices to watch.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.#ctor(System.IntPtr,System.String)">
+            <summary>
+            Constructs a new USBNotifier that will watch for events on 
+            devices matching the given interface GUID. A window handle 
+            is needed since the notifier relies on window messages.
+            </summary>
+            <param name="windowHandle">Window handle of a window that will be used internally for device notification messages.</param>
+            <param name="guidString">The interface GUID string of the devices to watch.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.OnArrival(System.String)">
+            <summary>
+            Triggers the arrival event
+            </summary>
+            <param name="devicePath">Device pathname of the device that has been connected</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.OnRemoval(System.String)">
+            <summary>
+            Trigggers the removal event
+            </summary>
+            <param name="devicePath">Device pathname of the device that has been connected</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.Dispose">
+            <summary>
+            Disposes the USBNotifier object and frees all resources. 
+            Call this method when the object is no longer needed.
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBNotifier.Dispose(System.Boolean)">
+            <summary>
+            Disposes the object's resources.
+            </summary>
+            <param name="disposing">True when dispose is called manually, false when called by the finalizer.</param>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBPipe">
+            <summary>
+            UsbPipe represents a single pipe on a WinUSB device. A pipe is connected
+            to a certain endpoint on the device and has a fixed direction (IN or OUT)
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipe.Address">
+            <summary>
+            Endpoint address including the direction in the most significant bit
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipe.Device">
+            <summary>
+            The USBDevice this pipe is associated with
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipe.MaximumPacketSize">
+            <summary>
+            Maximum packet size for transfers on this endpoint
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipe.Interface">
+            <summary>
+            The interface associated with this pipe
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipe.Policy">
+            <summary>
+            The pipe policy settings for this pipe
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipe.IsOut">
+            <summary>
+            True if the pipe has direction OUT (host to device), false otherwise.
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipe.IsIn">
+            <summary>
+            True if the pipe has direction IN (device to host), false otherwise.
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.Read(System.Byte[])">
+            <summary>
+            Reads data from the pipe into a buffer.
+            </summary>
+            <param name="buffer">The buffer to read data into. The maximum number of bytes that will be read is specified by the length of the buffer.</param>
+            <returns>The number of bytes read from the pipe.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads data from the pipe into a buffer.
+            </summary>
+            <param name="buffer">The buffer to read data into.</param>
+            <param name="offset">The byte offset in <paramref name="buffer"/> from which to begin writing data read from the pipe.</param>
+            <param name="length">The maximum number of bytes to read, starting at offset</param>
+            <returns>The number of bytes read from the pipe.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>Initiates an asynchronous read operation on the pipe. </summary>
+            <param name="buffer">Buffer that will receive the data read from the pipe.</param>
+            <param name="offset">Byte offset within the buffer at which to begin writing the data received.</param>
+            <param name="length">Length of the data to transfer.</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the operation is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous operation, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBPipe.EndRead(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBPipe.EndRead(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.EndRead(System.IAsyncResult)">
+            <summary>
+            Waits for a pending asynchronous read operation to complete.
+            </summary>
+            <param name="asyncResult">The <see cref="T:System.IAsyncResult"/> object representing the asynchonous operation,
+            as returned by <see cref="M:MadWizard.WinUSBNet.USBPipe.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)"/>.</param>
+            <returns>The number of bytes transfered during the operation.</returns>
+            <remarks>Every call to <see cref="M:MadWizard.WinUSBNet.USBPipe.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)"/> must have a matching call to <see cref="M:MadWizard.WinUSBNet.USBPipe.EndRead(System.IAsyncResult)"/> to dispose
+            of any resources used and to retrieve the result of the operation. When the operation was successful the method returns the number 
+            of bytes that were transfered. If an error occurred during the operation this method will throw the exceptions that would 
+            otherwise have ocurred during the operation. If the operation is not yet finished EndWrite will wait for the 
+            operation to finish before returning.</remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.Write(System.Byte[])">
+            <summary>
+            Writes data from a buffer to the pipe.
+            </summary>
+            <param name="buffer">The buffer to write data from. The complete buffer will be written to the device.</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Writes data from a buffer to the pipe.
+            </summary>
+            <param name="buffer">The buffer to write data from.</param>
+            <param name="offset">The byte offset in <paramref name="buffer"/> from which to begin writing.</param>
+            <param name="length">The number of bytes to write, starting at offset</param>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)">
+            <summary>Initiates an asynchronous write operation on the pipe. </summary>
+            <param name="buffer">Buffer that contains the data to write to the pipe.</param>
+            <param name="offset">Byte offset within the buffer from which to begin writing.</param>
+            <param name="length">Length of the data to transfer.</param>
+            <param name="userCallback">An optional asynchronous callback, to be called when the operation is complete. Can be null if no callback is required.</param>
+            <param name="stateObject">A user-provided object that distinguishes this particular asynchronous operation. Can be null if not required.</param>
+            <returns>An <see cref="T:System.IAsyncResult"/> object repesenting the asynchronous operation, which could still be pending.</returns>
+            <remarks>This method always completes immediately even if the operation is still pending. The <see cref="T:System.IAsyncResult"/> object returned represents the operation
+            and must be passed to <see cref="M:MadWizard.WinUSBNet.USBPipe.EndWrite(System.IAsyncResult)"/> to retrieve the result of the operation. For every call to this method a matching call to
+            <see cref="M:MadWizard.WinUSBNet.USBPipe.EndWrite(System.IAsyncResult)"/> must be made. When <paramref name="userCallback"/> specifies a callback function, this function will be called when the operation is completed. The optional
+            <paramref name="stateObject"/> parameter can be used to pass user-defined information to this callback or the <see cref="T:System.IAsyncResult"/>. The <see cref="T:System.IAsyncResult"/> 
+            also provides an event handle (<see cref="P:System.IAsyncResult.AsyncWaitHandle" />) that will be triggered when the operation is complete as well.
+            </remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.EndWrite(System.IAsyncResult)">
+            <summary>
+            Waits for a pending asynchronous write operation to complete.
+            </summary>
+            <param name="asyncResult">The <see cref="T:System.IAsyncResult"/> object representing the asynchonous operation,
+            as returned by <see cref="M:MadWizard.WinUSBNet.USBPipe.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)"/>.</param>
+            <returns>The number of bytes transfered during the operation.</returns>
+            <remarks>Every call to <see cref="M:MadWizard.WinUSBNet.USBPipe.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)"/> must have a matching call to <see cref="M:MadWizard.WinUSBNet.USBPipe.EndWrite(System.IAsyncResult)"/> to dispose
+            of any resources used and to retrieve the result of the operation. When the operation was successful the method returns the number 
+            of bytes that were transfered. If an error occurred during the operation this method will throw the exceptions that would 
+            otherwise have ocurred during the operation. If the operation is not yet finished EndWrite will wait for the 
+            operation to finish before returning.</remarks>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.Abort">
+            <summary>
+            Aborts all pending transfers for this pipe.
+            </summary>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipe.Flush">
+            <summary>
+            Flushes the pipe, discarding any data that is cached. Only available on IN direction pipes.
+            </summary>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBPipeCollection">
+            <summary>
+            Collection of UsbPipe objects
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipeCollection.Item(System.Byte)">
+            <summary>
+            Returns the pipe from the collection with the given pipe address 
+            </summary>
+            <param name="pipeAddress">Address of the pipe to return</param>
+            <returns>The pipe with the given pipe address</returns>
+            <exception cref="T:System.IndexOutOfRangeException">Thrown if no pipe with the specified address
+            is available in the collection.</exception>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipeCollection.GetEnumerator">
+            <summary>
+            Returns a typed enumerator that iterates through a collection.
+            </summary>
+            <returns>The enumerator object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:MadWizard.WinUSBNet.USBPipeCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An IEnumerator object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="T:MadWizard.WinUSBNet.USBPipePolicy">
+            <summary>
+            Describes the policy for a specific USB pipe
+            </summary>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipePolicy.AllowPartialReads">
+            <summary>
+            When false, read requests fail when the device returns more data than requested. When true, extra data is 
+            saved and returned on the next read. Default value is true. Only available on IN direction pipes.
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipePolicy.AutoClearStall">
+            <summary>
+            When true, the driver fails stalled data transfers, but the driver clears the stall condition automatically. Default
+            value is false.
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipePolicy.AutoFlush">
+            <summary>
+            If both AllowPartialReads and AutoFlush are true, when the device returns more data than requested by the client it
+            will discard the remaining data. Default value is false. Only available on IN direction pipes.
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipePolicy.IgnoreShortPackets">
+            <summary>
+            When true, read operations are completed only when the number of bytes requested by the client has been received. Default value is false.
+            Only available on IN direction pipes.
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipePolicy.PipeTransferTimeout">
+            <summary>
+            Specifies the timeout in milliseconds for pipe operations. If an operation does not finish within the specified time it will fail.
+            When set to zero, no timeout is used. Default value is zero.
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipePolicy.RawIO">
+            <summary>
+            When true, read and write operations to the pipe must have a buffer length that is a multiple of the maximum endpoint packet size, 
+            and the length must be less than the maximum transfer size. With these conditions met, data is sent directly to the USB driver stack,
+            bypassing the queuing and error handling of WinUSB. 
+            Default value is false. 
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+        <member name="P:MadWizard.WinUSBNet.USBPipePolicy.ShortPacketTerminate">
+            <summary>
+            When true, every write request that is a multiple of the maximum packet size for the endpoint is terminated with a zero-length packet. 
+            Default value is false. Only available on OUT direction pipes.
+            </summary>
+            <seealso href="http://msdn.microsoft.com/en-us/library/aa476439.aspx">WinUSB_GetPipePolicy for a more detailed description</seealso>
+        </member>
+    </members>
+</doc>
