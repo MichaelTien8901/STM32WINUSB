@@ -3,6 +3,8 @@
 This project show the steps to convert STM32 USB CDC to WINUSB Device with HAL library.  This will change the source code of CDC USB HAL library.  "CDC" name will be retained in order to show the differenece.  Also with Microsoft OS String Descriptor, no need to install WINUSB driver for Windows 10.
 
 ## Create STM32 USB CDC device using CubeMX.
+   
+   Using STM32F072 Discovery board
 
 ## Implement echo function
    Changes of usbd_cdc_if.c and main.c to implement simple echo function.
@@ -20,3 +22,6 @@ This project show the steps to convert STM32 USB CDC to WINUSB Device with HAL l
    
    Use WINUSBNET library from [https://github.com/madwizard-thomas/winusbnet](https://github.com/madwizard-thomas/winusbnet) to create simple echo test program using Visual Studio with C# WinForm
    
+## Create STM32F4 WinUSB example
+
+   Using STM32F4 Discovery board with generate project using TrueStudio.  There is not much difference from F0.
