@@ -1,0 +1,91 @@
+; ================ Version section =================
+ 
+[Version]
+Signature="$Windows NT$"
+Class=USB
+ClassGuid={88bae032-5a81-49f0-bc3d-a4ff138216d6}
+Provider = %ProviderName%
+DriverVer = 12/04/2012, 0.2.0.0
+
+; ========== Manufacturer/Models sections =========== 
+
+[Manufacturer]
+%ProviderName% = MyWinUSBDevice,NTx86,NTamd64
+
+[MyWinUSBDevice.NTx86]
+%DeviceDesc%=USB_Install, USB\VID_4701&PID_0290
+
+[MyWinUSBDevice.NTamd64]
+%DeviceDesc%=USB_Install, USB\VID_4701&PID_0290
+; ================== Installation ==================
+[ClassInstall]
+AddReg=ClassAddReg
+
+[ClassInstall32]
+AddReg=ClassAddReg
+
+[ClassAddReg]
+HKR,,,,"%ClassName%"
+HKR,,Icon,,-28
+
+[USB_Install]
+Include = WinUSB.inf 
+Needs = WinUSB.NT 
+
+[USB_Install.Services]
+Include = WinUSB.inf
+AddService = WinUSB, 0x00000002, WinUSB_ServiceInstall
+
+[WinUSB_ServiceInstall]
+DisplayName     = %WinUSB_SvcDesc%
+ServiceType     = 1
+StartType       = 3
+ErrorControl    = 1
+ServiceBinary   = %12%\WinUSB.sys
+
+[USB_Install.Wdf]
+KmdfService = WinUSB, WinUSB_Install
+
+[WinUSB_Install]
+KmdfLibraryVersion = 1.11
+
+[USB_Install.HW]
+AddReg = Dev_AddReg
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x00010000,"{13eb360b-bc1e-46cb-ac8b-ef3da47b4062}"
+
+[USB_Install.CoInstallers]
+AddReg = CoInstallers_AddReg
+CopyFiles = CoInstallers_CopyFiles
+
+[CoInstallers_AddReg]
+HKR, , CoInstallers32, 0x00010000, "WinUSBCoInstaller2.dll","WdfCoInstaller01009.dll, WdfCoInstaller"
+
+[CoInstallers_CopyFiles]
+WinUSBCoInstaller2.dll
+WdfCoInstaller01009.dll
+
+
+[SourceDisksNames]
+1 = %MediaDescription%
+ 
+[SourceDisksFiles]
+WinUSBCoInstaller2.dll = 1, x86
+WdfCoInstaller01009.dll = 1, x86
+
+ 
+[SourceDisksFiles.amd64]
+WinUSBCoInstaller2.dll = 1, amd64
+WdfCoInstaller01009.dll = 1, amd64
+ 
+[DestinationDirs]
+CoInstallers_CopyFiles = 11
+
+; ==================== Strings =====================
+[Strings]
+ProviderName="YMSG Software"
+
+DeviceDesc="MY WINUSB"
+MediaDescription  = "USB MY WINUSB Disc"
+WinUSB_SvcDesc = "WinUSB Driver Service"
