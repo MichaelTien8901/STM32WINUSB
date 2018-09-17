@@ -48,6 +48,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include "usbd_conf.h"
 #include "usbd_core.h"
 #include "usbd_desc.h"
 #include "usbd_conf.h"
@@ -148,6 +149,13 @@ uint8_t * USBD_FS_USRStringDesc(USBD_SpeedTypeDef speed, uint8_t idx, uint16_t *
 uint8_t * USBD_FS_USR_BOSDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 #endif /* (USBD_LPM_ENABLED == 1) */
 
+#if (USBD_SUPPORT_WINUSB==1)
+uint8_t *USBD_WinUSBOSStrDescriptor(uint16_t *length);
+uint8_t *USBD_WinUSBOSFeatureDescriptor(uint16_t *length);
+uint8_t *USBD_WinUSBOSPropertyDescriptor(uint16_t *length);
+#endif // (USBD_SUPPORT_WINUSB==1)
+
+
 /**
   * @}
   */
@@ -169,6 +177,11 @@ USBD_DescriptorsTypeDef FS_Desc =
 #if (USBD_LPM_ENABLED == 1)
 , USBD_FS_USR_BOSDescriptor
 #endif /* (USBD_LPM_ENABLED == 1) */
+#if (USBD_SUPPORT_WINUSB == 1)
+, USBD_WinUSBOSFeatureDescriptor
+, USBD_WinUSBOSPropertyDescriptor
+#endif // (USBD_SUPPORT_WINUSB==1)
+   
 };
 
 #if defined ( __ICCARM__ ) /* IAR Compiler */
@@ -187,8 +200,8 @@ __ALIGN_BEGIN uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
   0x00,                       /*bcdUSB */
 #endif /* (USBD_LPM_ENABLED == 1) */
   0x02,
-  0x02,                       /*bDeviceClass*/
-  0x02,                       /*bDeviceSubClass*/
+  0x00,                       /*bDeviceClass*/
+  0x00,                       /*bDeviceSubClass*/
   0x00,                       /*bDeviceProtocol*/
   USB_MAX_EP0_SIZE,           /*bMaxPacketSize*/
   LOBYTE(USBD_VID),           /*idVendor*/
@@ -226,6 +239,103 @@ __ALIGN_BEGIN uint8_t USBD_FS_BOSDesc[USB_SIZ_BOS_DESC] __ALIGN_END =
   0x0
 };
 #endif /* (USBD_LPM_ENABLED == 1) */
+
+#define USB_LEN_OS_FEATURE_DESC 0x28
+#if defined ( __ICCARM__ ) /* IAR Compiler */
+  #pragma data_alignment=4
+#endif /* defined ( __ICCARM__ ) */
+
+__ALIGN_BEGIN uint8_t USBD_WINUSB_OSFeatureDesc[USB_LEN_OS_FEATURE_DESC] __ALIGN_END =
+{
+   0x28, 0, 0, 0, // length
+   0, 1,          // bcd version 1.0
+   4, 0,          // windex: extended compat ID descritor
+   1,             // no of function
+   0, 0, 0, 0, 0, 0, 0, // reserve 7 bytes
+// function
+   0,             // interface no
+   0,             // reserved
+   'W', 'I', 'N', 'U', 'S', 'B', 0, 0, //  first ID
+     0,   0,   0,   0,   0,   0, 0, 0,  // second ID
+     0,   0,   0,   0,   0,   0 // reserved 6 bytes      
+};
+#define USB_LEN_OS_PROPERTY_DESC 0x8E
+#if defined ( __ICCARM__ ) /* IAR Compiler */
+  #pragma data_alignment=4
+#endif /* defined ( __ICCARM__ ) */
+__ALIGN_BEGIN uint8_t USBD_WINUSB_OSPropertyDesc[USB_LEN_OS_PROPERTY_DESC] __ALIGN_END =
+{
+      0x8E, 0, 0, 0,  // length 246 byte
+      0x00, 0x01,   // BCD version 1.0
+      0x05, 0x00,   // Extended Property Descriptor Index(5)
+      0x01, 0x00,   // number of section (1)
+//; property section        
+      0x84, 0x00, 0x00, 0x00,   // size of property section
+      0x1, 0, 0, 0,   //; property data type (1)
+      0x28, 0,        //; property name length (42)
+      'D', 0,
+      'e', 0,
+      'v', 0,
+      'i', 0,
+      'c', 0,
+      'e', 0,
+      'I', 0,
+      'n', 0,
+      't', 0,
+      'e', 0,
+      'r', 0,
+      'f', 0,
+      'a', 0,
+      'c', 0,
+      'e', 0,
+      'G', 0,
+      'U', 0,
+      'I', 0,
+      'D', 0,
+      0, 0,
+      // D6805E56-0447-4049-9848-46D6B2AC5D28
+      0x4E, 0, 0, 0,  // ; property data length
+      '{', 0,
+      '1', 0,
+      '3', 0,
+      'E', 0,
+      'B', 0,
+      '3', 0,
+      '6', 0,
+      '0', 0,
+      'B', 0,
+      '-', 0,
+      'B', 0,
+      'C', 0,
+      '1', 0,
+      'E', 0,
+      '-', 0,
+      '4', 0,
+      '6', 0,
+      'C', 0,
+      'B', 0,
+      '-', 0,
+      'A', 0,
+      'C', 0,
+      '8', 0,
+      'B', 0,
+      '-', 0,
+      'E', 0,
+      'F', 0,
+      '3', 0,
+      'D', 0,
+      'A', 0,
+      '4', 0,
+      '7', 0,
+      'B', 0,
+      '4', 0,
+      '0', 0,
+      '6', 0,
+      '2', 0,
+      '}', 0,
+      0, 0,
+      
+};
 
 /**
   * @}
@@ -389,6 +499,34 @@ uint8_t * USBD_FS_USR_BOSDescriptor(USBD_SpeedTypeDef speed, uint16_t *length)
   return (uint8_t*)USBD_FS_BOSDesc;
 }
 #endif /* (USBD_LPM_ENABLED == 1) */
+
+#if (USBD_SUPPORT_WINUSB==1)
+const uint8_t USBD_OS_STRING[8] = { 
+   'M',
+   'S',
+   'F',
+   'T',
+   '1',
+   '0',
+   '0',
+   USB_REQ_MS_VENDOR_CODE, 
+}; 
+uint8_t *USBD_WinUSBOSStrDescriptor(uint16_t *length)
+{
+   USBD_GetString((uint8_t *)USBD_OS_STRING, USBD_StrDesc, length);
+   return USBD_StrDesc;
+}
+uint8_t *USBD_WinUSBOSFeatureDescriptor(uint16_t *length)
+{
+  *length = USB_LEN_OS_FEATURE_DESC;
+  return USBD_WINUSB_OSFeatureDesc;
+}
+uint8_t *USBD_WinUSBOSPropertyDescriptor(uint16_t *length)
+{
+  *length = USB_LEN_OS_PROPERTY_DESC;
+   return USBD_WINUSB_OSPropertyDesc;
+}
+#endif // (USBD_SUPPORT_WINUSB==1)
 
 /**
   * @}
