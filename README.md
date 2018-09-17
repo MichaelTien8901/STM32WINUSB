@@ -16,3 +16,7 @@ This project show the steps to convert STM32 USB CDC to WINUSB Device with HAL l
   The inf file need to match the VID, PID, and DeviceInterfaceGUID of the USB device.
   Only Windows 7 and before need install driver.  
 
+## Create Echo Test Win Form program using WINUSBNET library
+   
+   Use WINUSBNET library from [https://github.com/madwizard-thomas/winusbnet](https://github.com/madwizard-thomas/winusbnet) to create simple echo test program using Visual Studio with C# WinForm
+   
