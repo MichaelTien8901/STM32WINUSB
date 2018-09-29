@@ -25,3 +25,17 @@ This project show the steps to convert STM32 USB CDC to WINUSB Device with HAL l
 ## Create STM32F4 WinUSB example
 
    Using STM32F4 Discovery board with generate project using TrueStudio.  There is not much difference from F0.
+
+## Driver Installation using Zadig
+
+   Another option to install drivers is using [Zadig](https://zadig.akeo.ie/). 
+   The usage of Zadig can be found at [here.](https://github.com/pbatard/libwdi/wiki/Zadig).  
+
+   * Advanced Mode (Options ? Advanced Mode) 
+
+     In this mode we can configure our device with defined values.
+
+   * Open Preset (Device ? Load Preset Device)
+    
+     Load the predefined values(especially "Device Interface GUID") for the device driver.  The sample config.ini is in the folder "Zadig".
+
