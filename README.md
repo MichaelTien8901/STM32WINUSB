@@ -39,3 +39,7 @@ This project show the steps to convert STM32 USB CDC to WINUSB Device with HAL l
     
      Load the predefined values(especially "Device Interface GUID") for the device driver.  The sample config.ini is in the folder "Zadig".
 
+## Debug Tips and Registry 
+
+   Windows will save registry entry "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Usbflags\VVVPPPRRRR" where VVV is PID, PPP is PID, and RRRR is version number.  This will save the request of OS string descriptor(0xEE) and will prevent request for next plug in device.  Please delete corresponding registry entry and uninstall the device driver to debug new device program.
+   
